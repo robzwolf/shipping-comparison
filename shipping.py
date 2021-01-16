@@ -28,7 +28,7 @@ def get_hermes_price(item_value):
     return (base_cost + signature + cover)
 
 
-def get_yodel_price(item_value):
+def get_collect_plus_yodel_price(item_value):
     base_cost = 279
 
     if item_value <= 5000:
@@ -57,17 +57,17 @@ def get_royal_mail_price(item_value):
 item_value = int(sys.argv[1])
 shipping_costs = {
     "Hermes": get_hermes_price(item_value),
-    "Yodel": get_yodel_price(item_value),
+    "CollectPlus (Yodel)": get_collect_plus_yodel_price(item_value),
     "Royal Mail": get_royal_mail_price(item_value)
 }
 
-print("\n----------------------------------------------------")
+print("\n--------------------------------------------------------------")
 print("To ship a package worth £{:.2f}:\n".format(item_value/100))
 for (courier, price) in shipping_costs.items():
     print("{}: £{:.2f}".format(courier, price/100))
 
 cheapest_courier = min(shipping_costs, key=shipping_costs.get)
 
-print("\n----------------------------------------------------")
+print("\n--------------------------------------------------------------")
 print("Cheapest courier is {}, who charge £{:.2f}.".format(cheapest_courier, shipping_costs[cheapest_courier]/100))
-print("----------------------------------------------------")
+print("--------------------------------------------------------------")
