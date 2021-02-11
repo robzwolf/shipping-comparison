@@ -52,11 +52,11 @@ def get_royal_mail_price(item_value):
     if item_value <= 10000:
         return 510
     elif item_value <= 50000:
-        return 885
+        return 755
     elif item_value <= 100000:
-        return 985
+        return 855
     elif item_value <= 250000:
-        return 1185
+        return 1055
     else:
         return None
 
@@ -96,7 +96,7 @@ if __name__ == "__main__":
         }
 
         divider(leading_new_line=True)
-        print("To ship a package worth £{:.2f}:\n".format(item_value/100))
+        print("To ship a package worth £{:.2f} which weighs fewer than 500g:\n".format(item_value/100))
 
         cheapest_courier, cheapest_price = None, None
         for (courier, price) in shipping_costs.items():
