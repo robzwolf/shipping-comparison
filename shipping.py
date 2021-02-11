@@ -23,13 +23,15 @@ def get_hermes_price(item_value):
         cover = 0.05 * item_value - 430
     elif item_value <= 30000:
         cover = 0.04 * item_value - 180
-    else:
+    elif item_value <= 99999:
         cover = 1020
+    else:
+        return None
 
     return (base_cost + signature + cover)
 
 
-def get_yodel_price(item_value):
+def get_collect_plus_yodel_price(item_value):
     base_cost = 279
 
     if item_value <= 5000:
@@ -40,6 +42,8 @@ def get_yodel_price(item_value):
         cover = 300
     elif item_value <= 30000:
         cover = 500
+    else:
+        return None
 
     return (base_cost + cover)
 
@@ -53,6 +57,8 @@ def get_royal_mail_price(item_value):
         return 985
     elif item_value <= 250000:
         return 1185
+    else:
+        return None
 
 
 def get_inpost_price(item_value):
@@ -68,6 +74,14 @@ def get_inpost_price(item_value):
     return (base_cost + cover)
 
 
+def divider(leading_new_line=False):
+    line = "------------------------------------------------------------------"
+    if(leading_new_line):
+        print("\n{}".format(line))
+    else:
+        print(line)
+
+
 if __name__ == "__main__":
     if (len(sys.argv) != 2):
         print("Invalid arguments:")
@@ -76,18 +90,27 @@ if __name__ == "__main__":
         item_value = int(sys.argv[1])
         shipping_costs = {
             "Hermes": get_hermes_price(item_value),
-            "Yodel": get_yodel_price(item_value),
+            "CollectPlus (Yodel)": get_collect_plus_yodel_price(item_value),
             "Royal Mail": get_royal_mail_price(item_value),
             "InPost": get_inpost_price(item_value)
         }
 
-        print("\n----------------------------------------------------")
+        divider(leading_new_line=True)
         print("To ship a package worth £{:.2f}:\n".format(item_value/100))
-        for (courier, price) in shipping_costs.items():
-            print("{}: £{:.2f}".format(courier, price/100))
 
-        cheapest_courier = min(shipping_costs, key=shipping_costs.get)
+        cheapest_courier, cheapest_price = None, None
+        for (courier, price) in shipping_costs.items():
+            if price:
+                print("{}: £{:.2f}".format(courier, price/100))
+
+                if not cheapest_price or price < cheapest_price:
+                    cheapest_courier, cheapest_price = courier, price
+            else:
+                print("{}: Can't ship an item worth £{:.2f}.".format(courier, item_value/100))
         
-        print("\n----------------------------------------------------")
-        print("Cheapest courier is {}, who charge £{:.2f}.".format(cheapest_courier, shipping_costs[cheapest_courier]/100))
-        print("----------------------------------------------------")
+        divider(leading_new_line=True)
+        if cheapest_courier:
+            print("Cheapest courier is {}, who charge £{:.2f}.".format(cheapest_courier, cheapest_price/100))
+        else:
+            print("No courier could be found who will ship an item worth £{:.2f}.".format(item_value/100))
+        divider()
