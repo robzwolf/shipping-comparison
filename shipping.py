@@ -69,7 +69,7 @@ def get_inpost_price(item_value):
     elif item_value <= 100000:
         cover = 0.05 * item_value - 100
     else:
-        cover = 4900
+        return None
     
     return (base_cost + cover)
 
