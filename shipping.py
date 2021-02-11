@@ -55,6 +55,19 @@ def get_royal_mail_price(item_value):
         return 1185
 
 
+def get_inpost_price(item_value):
+    base_cost = 316
+
+    if item_value <= 2000:
+        cover = 0
+    elif item_value <= 100000:
+        cover = 0.05 * item_value - 100
+    else:
+        cover = 4900
+    
+    return (base_cost + cover)
+
+
 if __name__ == "__main__":
     if (len(sys.argv) != 2):
         print("Invalid arguments:")
@@ -64,7 +77,8 @@ if __name__ == "__main__":
         shipping_costs = {
             "Hermes": get_hermes_price(item_value),
             "Yodel": get_yodel_price(item_value),
-            "Royal Mail": get_royal_mail_price(item_value)
+            "Royal Mail": get_royal_mail_price(item_value),
+            "InPost": get_inpost_price(item_value)
         }
 
         print("\n----------------------------------------------------")
